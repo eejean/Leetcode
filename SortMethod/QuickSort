@@ -1,0 +1,46 @@
+
+Quick Sort needs start and end index to make sure whick part of original array needs to be sorted.
+
+    // quick－sort
+    public void sortIntegers1(int[] A) {
+        // write your code here
+        if(A == null || A.length == 0) {
+            return;
+        }
+        
+        quickSort(A, 0, A.length - 1);
+    }
+    
+    private void quickSort(int[] A, int start, int end) {
+        if(start >= end) {
+            return;
+        }
+        // tip1: pviot is value not index
+        int mid = start + (end - start) / 2;
+        int pivot = A[mid];
+        int left = start, right = end;
+        // 注意是left <= right
+        while(left <= right) {
+            // 找到左边第一个大于或等于pivot的数
+            while(left <= right && A[left] < pivot) {
+                left++;
+            }
+            // 找到右边第一个小于或等于pivot的数
+            while(left <= right && A[right] > pivot) {
+                right--;
+            }
+            // 左右都找到了，互换位置，继续循环
+            if(left <= right) {
+                int tmp = A[left];
+                A[left] = A[right];
+                A[right] = tmp;
+                // 此处指针如果不变化可能会陷入死循环
+                left++;
+                right--;
+            }
+        }
+        // 出了上面while循环，则表示left > right, 所以左右便分别有如下坐标区间
+        quickSort(A, start, right);
+        quickSort(A, left, end);
+    }
+}
