@@ -1,0 +1,53 @@
+
+注意：merge sort有一个关键点是它需要额外的一个O(n) 空间来存放新的结果
+
+
+    //  Merge sort
+    public void sortIntegers_merge(int[] A) {
+        // write your code here
+        if(A == null || A.length == 0) {
+            return;
+        }
+        int[] tmp = new int[A.length];
+        mergeSort(A, 0, A.length - 1, tmp);
+    }
+    
+    private void mergeSort(int[] A, int start, int end, int[] tmp) {
+        if(start >= end) {
+            return;
+        }
+        int mid = start + (end - start) / 2;
+        mergeSort(A, start, mid, tmp);
+        mergeSort(A, mid + 1, end, tmp);
+        merge(A, start, end, tmp);
+    }
+    
+    private void merge(int[] A, int start, int end, int[] tmp) {
+       
+        int mid = start + (end - start) / 2;
+        // 注意这里tmp的index是从start开始，而不是从0开始
+        int index = start;
+        int leftIdx = start;
+        int rightIdx = mid + 1;
+        
+        while(leftIdx <= mid && rightIdx <= end) {
+            if(A[leftIdx] < A[rightIdx]) {
+                tmp[index++] = A[leftIdx++];
+            }
+            else {
+                tmp[index++] = A[rightIdx++];
+            }
+        }
+        
+        while(leftIdx <= mid) {
+            tmp[index++] = A[leftIdx++];
+        }
+        
+        while(rightIdx <= end) {
+            tmp[index++] = A[rightIdx++];
+        }
+        // 注意这里tmp的index是从start开始，而不是从0开始
+        for(int i = start; i <= end; i++) {
+            A[i] = tmp[i];
+        }
+    }
